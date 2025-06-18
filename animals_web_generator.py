@@ -35,6 +35,9 @@ def serialize_animal(animal_obj):
     if 'type' in animal_obj['characteristics'].keys():
         animal_type = animal_obj['characteristics']['type']
         output += f"<strong>Type:</strong> {animal_type}<br />\n"
+    if 'lifespan' in animal_obj['characteristics'].keys ():
+        lifespan = animal_obj['characteristics']['lifespan']
+        output += f"<strong>Lifespan:</strong> {lifespan}<br />\n"
     output += "</p>\n</li>\n"
     return output
 
