@@ -11,38 +11,54 @@ def load_data(file_path):
         return json.load(handle)
 
 
-def load_html_template():
-    """ Loads a HTML template file """
-    html_data = open(HTML_TEMPLATE_FILE, "r")
+def load_html_template(template):
+    """ Loads an HTML template file """
+    html_data = open(template, "r")
     html_content = html_data.read()
     html_data.close()
     return html_content
 
 
-def get_animals_info():
-    """ Reads information from JSON file and returns them as a string"""
+def serialize_animal(animal_obj):
+    """ Serializes an animal object, returns HTML-string"""
     output = ''
-    animals_data = load_data('animals_data.json')
-    for animal in animals_data:
-        output += '<li class="cards__item">\n'
-        name = animal['name']  # Assuming name is always given
-        output += f"<div class='card__title'>{name}</div>\n"
-        output += '<p class="card__text">'
-        if 'diet' in animal['characteristics'].keys():
-            diet = animal['characteristics']['diet']
-            output += f"<strong>Diet:</strong> {diet}<br />\n"
-        if 'locations' in animal.keys():
-            output += f"<strong>Location:</strong> {animal['locations'][0]}<br />\n"
-            # print(", ".join(animal['locations'])) <- all locations
-        if 'type' in animal['characteristics'].keys():
-            animal_type = animal['characteristics']['type']
-            output += f"<strong>Type:</strong> {animal_type}<br />\n"
-        output += "</p>\n</li>\n"
+    output += '<li class="cards__item">\n'
+    name = animal_obj['name']  # Assuming name is always given
+    output += f"<div class='card__title'>{name}</div>\n"
+    output += '<p class="card__text">\n'
+    if 'diet' in animal_obj['characteristics'].keys():
+        diet = animal_obj['characteristics']['diet']
+        output += f"<strong>Diet:</strong> {diet}<br />\n"
+    if 'locations' in animal_obj.keys():
+        output += f"<strong>Location:</strong> {animal_obj['locations'][0]}<br />\n"
+        # print(", ".join(animal['locations'])) <- all locations
+    if 'type' in animal_obj['characteristics'].keys():
+        animal_type = animal_obj['characteristics']['type']
+        output += f"<strong>Type:</strong> {animal_type}<br />\n"
+    output += "</p>\n</li>\n"
     return output
 
 
-html_content_with_animals = load_html_template().replace(REPLACE_STRING, get_animals_info())
+def write_html_file(content, path):
+    """ Writes an HTML file """
+    with open(path, 'w') as file:
+        file.write(content)
+    file.close()
 
-with open(NEW_HML_FILE, 'w') as file:
-    file.write(html_content_with_animals)
-file.close()
+
+def main():
+    """
+    1. Loads data from JSON file and serializes the objects within into an HTML-string
+    2. Gets HTML from template and replaces specified part with HTML-string
+    3. Writes new HTML into file
+    """
+    animals_data = load_data('animals_data.json')
+    serialized_data = ''
+    for animal in animals_data:
+        serialized_data += serialize_animal(animal)
+    altered_html_content = load_html_template(HTML_TEMPLATE_FILE).replace(REPLACE_STRING, serialized_data)
+    write_html_file(altered_html_content, NEW_HML_FILE)
+
+
+if __name__ == '__main__':
+    main()
