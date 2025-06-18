@@ -27,6 +27,9 @@ def serialize_animal(animal_obj):
     output += f"<div class='card__title'>{name}</div>\n"
     output += '<p class="card__text">\n'
     output += "<ul class='card_list'>\n"
+    if 'skin_type' in animal_obj['characteristics'].keys():
+        skin = animal_obj['characteristics']['skin_type']
+        output += f"<li><strong>Skin type:</strong> {skin}</li>\n"
     if 'diet' in animal_obj['characteristics'].keys():
         diet = animal_obj['characteristics']['diet']
         output += f"<li><strong>Diet:</strong> {diet}</li>\n"
@@ -50,6 +53,16 @@ def write_html_file(content, path):
     file.close()
 
 
+def get_user_selection(types):
+    while True:
+        print("\nPlease select a skin type from the following list:")
+        for skin_type in types:
+            print(skin_type)
+        selection = input("or 'All' for all animals: ").capitalize()
+        if selection == 'All' or selection in types:
+            return selection
+
+
 def main():
     """
     1. Loads data from JSON file and serializes the objects within into an HTML-string
@@ -58,10 +71,18 @@ def main():
     """
     animals_data = load_data('animals_data.json')
     serialized_data = ''
+    skin_types = []
     for animal in animals_data:
-        serialized_data += serialize_animal(animal)
+        if ('skin_type' in animal['characteristics'].keys()
+                and animal['characteristics']['skin_type'] not in skin_types):
+            skin_types.append(animal['characteristics']['skin_type'])
+    selection = get_user_selection(skin_types)
+    for animal in animals_data:
+        if selection == 'All' or animal['characteristics']['skin_type'] == selection:
+            serialized_data += serialize_animal(animal)
     altered_html_content = load_html_template(HTML_TEMPLATE_FILE).replace(REPLACE_STRING, serialized_data)
     write_html_file(altered_html_content, NEW_HML_FILE)
+    print("File: " + NEW_HML_FILE + " saved!")
 
 
 if __name__ == '__main__':
