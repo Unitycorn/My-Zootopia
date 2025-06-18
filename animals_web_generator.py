@@ -54,6 +54,7 @@ def write_html_file(content, path):
 
 
 def get_user_selection(types):
+    """Ask for skin type to either add all animals to the string or just a specified type"""
     while True:
         print("\nPlease select a skin type from the following list:")
         for skin_type in types:
