@@ -24,18 +24,19 @@ def get_animals_info():
     output = ''
     animals_data = load_data('animals_data.json')
     for animal in animals_data:
+        output += '<li class="cards__item">\n'
         name = animal['name']  # Assuming name is always given
-        output += f"Name: {name}\n"
+        output += f"Name: {name}<br />\n"
         if 'diet' in animal['characteristics'].keys():
             diet = animal['characteristics']['diet']
-            output += f"Diet: {diet}\n"
+            output += f"Diet: {diet}<br />\n"
         if 'locations' in animal.keys():
-            output += f"Location: {animal['locations'][0]}\n"
+            output += f"Location: {animal['locations'][0]}<br />\n"
             # print(", ".join(animal['locations'])) <- all locations
         if 'type' in animal['characteristics'].keys():
             animal_type = animal['characteristics']['type']
-            output += f"Type: {animal_type}\n"
-        output += "\n"
+            output += f"Type: {animal_type}<br />\n"
+        output += "</li>\n"
     return output
 
 
