@@ -26,19 +26,20 @@ def serialize_animal(animal_obj):
     name = animal_obj['name']  # Assuming name is always given
     output += f"<div class='card__title'>{name}</div>\n"
     output += '<p class="card__text">\n'
+    output += "<ul class='card_list'>\n"
     if 'diet' in animal_obj['characteristics'].keys():
         diet = animal_obj['characteristics']['diet']
-        output += f"<strong>Diet:</strong> {diet}<br />\n"
+        output += f"<li><strong>Diet:</strong> {diet}</li>\n"
     if 'locations' in animal_obj.keys():
-        output += f"<strong>Location:</strong> {animal_obj['locations'][0]}<br />\n"
+        output += f"<li><strong>Location:</strong> {animal_obj['locations'][0]}</li>\n"
         # print(", ".join(animal['locations'])) <- all locations
     if 'type' in animal_obj['characteristics'].keys():
         animal_type = animal_obj['characteristics']['type']
-        output += f"<strong>Type:</strong> {animal_type}<br />\n"
-    if 'lifespan' in animal_obj['characteristics'].keys ():
+        output += f"<li><strong>Type:</strong> {animal_type}</li>\n"
+    if 'lifespan' in animal_obj['characteristics'].keys():
         lifespan = animal_obj['characteristics']['lifespan']
-        output += f"<strong>Lifespan:</strong> {lifespan}<br />\n"
-    output += "</p>\n</li>\n"
+        output += f"<li><strong>Lifespan:</strong> {lifespan}</li>\n"
+    output += "</ul>\n</p>\n</li>\n"
     return output
 
 
