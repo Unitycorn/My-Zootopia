@@ -26,17 +26,18 @@ def get_animals_info():
     for animal in animals_data:
         output += '<li class="cards__item">\n'
         name = animal['name']  # Assuming name is always given
-        output += f"Name: {name}<br />\n"
+        output += f"<div class='card__title'>{name}</div>\n"
+        output += '<p class="card__text">'
         if 'diet' in animal['characteristics'].keys():
             diet = animal['characteristics']['diet']
-            output += f"Diet: {diet}<br />\n"
+            output += f"<strong>Diet:</strong> {diet}<br />\n"
         if 'locations' in animal.keys():
-            output += f"Location: {animal['locations'][0]}<br />\n"
+            output += f"<strong>Location:</strong> {animal['locations'][0]}<br />\n"
             # print(", ".join(animal['locations'])) <- all locations
         if 'type' in animal['characteristics'].keys():
             animal_type = animal['characteristics']['type']
-            output += f"Type: {animal_type}<br />\n"
-        output += "</li>\n"
+            output += f"<strong>Type:</strong> {animal_type}<br />\n"
+        output += "</p>\n</li>\n"
     return output
 
 
